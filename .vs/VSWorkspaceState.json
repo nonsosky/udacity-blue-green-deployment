@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.circleci",
+    "\\.circleci\\ansible",
+    "\\.circleci\\ansible\\roles",
+    "\\.circleci\\ansible\\roles\\configure-server",
+    "\\.circleci\\ansible\\roles\\configure-server\\tasks",
+    "\\backend\\src\\modules\\domain"
   ],
-  "SelectedNode": "\\C:\\Users\\Kenneth\\Source\\Repos\\udacity-blue-green-deployment",
+  "SelectedNode": "\\.circleci\\ansible\\roles\\configure-server\\tasks\\main.yml",
   "PreviewInSolutionExplorer": false
 }
