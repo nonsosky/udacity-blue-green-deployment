@@ -173,35 +173,18 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["72:75:36:2e:e0:c2:79:6c:8d:3d:00:88:2b:92:85:f4"]
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible tar gzip aws-cli
-      - attach_workspace:
-          at: ~/
-      - restore_cache:
-          keys: [backend-build]      
+            apk add --update ansible tar gzip aws-cli      
       - run:
           name: Configure server
-          command: |
-            echo NODE_ENV=production > ~/project/backend/.env
-            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ~/project/backend/.env
-            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ~/project/backend/.env
-            echo TYPEORM_HOST=$TYPEORM_HOST >> ~/project/backend/.env
-            echo TYPEORM_PORT=$TYPEORM_PORT >> ~/project/backend/.env
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ~/project/backend/.env
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ~/project/backend/.env
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ~/project/backend/.env
-            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ~/project/backend/.env
-            echo TYPEORM_MIGRATIONS_DIR=TYPEORM_MIGRATIONS_DIR >> ~/project/backend/.env
-            cat ~/project/backend/.env
-            
+          command: |         
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/backend
+            cat ~/project/.circleci/ansible/inventory.txt
       - destroy-environment:
           WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -210,8 +193,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      #- restore_cache:
-      #    keys: [backend-build]j
+      - restore_cache:
+          keys: [backend-build]
       - attach_workspace:
           at: ~/
       - run:
@@ -236,12 +219,12 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
             apk add --update nodejs ansible tar npm curl gzip aws-cli
-      - attach_workspace:
-          at: ~/
       - run:
           name: Get backend url
           command: |
@@ -273,12 +256,12 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["72:75:36:2e:e0:c2:79:6c:8d:3d:00:88:2b:92:85:f4"]
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
             apk add --update nodejs ansible tar npm curl gzip aws-cli
-      - attach_workspace:
-          at: ~/
       - run:
           name: Deploy backend    
           command: |
