@@ -15,7 +15,7 @@
   pre_tasks:
     - name: "wait 800 seconds for target connection to become reachable/usable."
       wait_for_connection:
-        timeout: 1000
+        sleep: 120
 
     - name: 'install python'
       apt:
