@@ -4,10 +4,9 @@
     "\\.circleci",
     "\\.circleci\\ansible",
     "\\.circleci\\ansible\\roles",
-    "\\.circleci\\ansible\\roles\\configure-server",
-    "\\.circleci\\ansible\\roles\\configure-server\\tasks",
-    "\\backend\\src\\modules\\domain"
+    "\\.circleci\\ansible\\roles\\configure-prometheus-node-exporter",
+    "\\.circleci\\ansible\\roles\\configure-prometheus-node-exporter\\tasks"
   ],
-  "SelectedNode": "\\.circleci\\ansible\\roles\\configure-server\\tasks\\main.yml",
+  "SelectedNode": "\\frontend1",
   "PreviewInSolutionExplorer": false
 }
