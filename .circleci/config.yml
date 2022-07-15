@@ -1,6 +1,25 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.10.1
+  aws-cli: circleci/aws-cli@3.1.1
+
 commands:
+
+  notify_slack_error:
+    steps:
+      - slack/notify:
+          mentions: "@Kenneth"
+          event: fail
+          template: basic_fail_1
+
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          mentions: "@Kenneth"
+          event: pass
+          template: basic_success_1
+
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -55,6 +74,9 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+
+      - notify_slack_error
+      - notify_slack_pass
   
           
   build-backend:
@@ -73,6 +95,9 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+
+      - notify_slack_error
+      - notify_slack_pass
 
   test-frontend:
     docker:
@@ -185,6 +210,11 @@ jobs:
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
             cat ~/project/.circleci/ansible/inventory.txt
+      - run:
+          name: Install node exporter
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-node-exporter.yml
       - destroy-environment:
           WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -375,7 +405,8 @@ jobs:
               echo "----------------No need to clean up-----------------"
             fi
 
-  
+      - notify_slack_error
+      - notify_slack_pass
 
 workflows:
   default:
@@ -409,4 +440,4 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
-          #g
+          
