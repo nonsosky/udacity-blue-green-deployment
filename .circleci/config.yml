@@ -8,7 +8,7 @@ orbs:
   slack: circleci/slack@4.10.1
   aws-cli: circleci/aws-cli@3.1.1
 
-  #commands section, powering my slack notification, destroy-environment and revert-migration settings
+  #commands section, powering my slack notification, destroy-environment and revert-migration settingss
 commands:
   notify_slack_error:
     steps:
