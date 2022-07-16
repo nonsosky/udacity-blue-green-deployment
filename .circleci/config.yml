@@ -79,8 +79,8 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
 
-      - notify_slack_error
-      - notify_slack_pass
+      #- notify_slack_error
+      #- notify_slack_pass
   
           
   build-backend:
@@ -100,8 +100,8 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-      - notify_slack_error
-      - notify_slack_pass
+      #- notify_slack_error
+      #- notify_slack_pass
 
   test-frontend:
     docker:
@@ -214,11 +214,11 @@ jobs:
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
             cat ~/project/.circleci/ansible/inventory.txt
-      - run:
-          name: Install node exporter
-          command: |
-            cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-node-exporter.yml
+      #- run:
+       #   name: Install node exporter
+       #   command: |
+       #     cd .circleci/ansible
+       #     ansible-playbook -i inventory.txt configure-node-exporter.yml
       - destroy-environment:
           WorkflowID: ${CIRCLE_WORKFLOW_ID:0:7}
 
