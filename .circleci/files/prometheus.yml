@@ -1,9 +1,5 @@
 Description: |
   This template deploys prometheus in the VPC vpc-0492b2b84bd1a3194 (us-west-1)
-  To execute please run this:
-  aws cloudformation deploy --stack-name prometheus --template-file ${ThisFile.yml} --capabilities CAPABILITY_IAM \
-  --parameter-overrides AuthEmail=${YourGmailAddress} EmailPassword=${YourGmailPassword} FromEmail=${YourEmail} ToEmail=${AnyEmailDestination} \
-  VPC=${YourVPC} AZ=${YourAZ} Subnet=${YourSubnet}
 Parameters:
   VPC:
     Description: Deploy the instance in this VPC
@@ -18,7 +14,7 @@ Parameters:
     Description: |
       Set a keypair you will use to connect to the instance
       You can generate a keypair from CLI by running
-      `aws ec2 create-key-pair --key-name udacity >> udacity.pem`
+      aws ec2 create-key-pair --key-name udacity >> udacity.pem
       where udacity is the name of the KeyPair
       Read more here: https://docs.aws.amazon.com/cli/latest/reference/ec2/create-key-pair.html#examples
     Type: String
@@ -46,7 +42,7 @@ Parameters:
   ToEmail:
     Description: The recipient email for alerts
     Type: String
-?
+
 Resources:
   # Security groups
   myWebServerSecurityGroup:
@@ -113,13 +109,10 @@ Resources:
           sudo apt install nginx -y
           sudo systemctl start nginx
           sudo systemctl enable nginx
-?
           sudo useradd --no-create-home --shell /bin/false prome
           sudo useradd --no-create-home --shell /bin/false node_exporter
-          # Install Prometheus
           sudo mkdir /etc/prometheus
           sudo mkdir /var/lib/prometheus
-          # Download Prometheus and copy to /usr/local/bin
           wget https://github.com/prometheus/prometheus/releases/download/v2.0.0/prometheus-2.0.0.linux-amd64.tar.gz
           tar xvf prometheus-2.0.0.linux-amd64.tar.gz
           sudo cp prometheus-2.0.0.linux-amd64/prometheus /usr/local/bin/
@@ -144,9 +137,9 @@ Resources:
           sudo cp alertmanager-0.21.0.linux-amd64/alertmanager /usr/local/bin/
           sudo cp alertmanager-0.21.0.linux-amd64/amtool /usr/local/bin/
           sudo mkdir /var/lib/alertmanager
-?
+
           rm -rf alertmanager-0.21.0.linux-amd64.tar.gz alertmanager-0.21.0.linux-amd64
-?
+
           # Configure node exporter service
           sudo echo "[Unit]" >> /etc/systemd/system/node-exporter.service
           sudo echo "Description=Prometheus Node Exporter Service" >> /etc/systemd/system/node-exporter.service
@@ -189,7 +182,7 @@ Resources:
           sudo echo "Restart=always" >> /etc/systemd/system/alertmanager.service
           sudo echo "[Install]" >> /etc/systemd/system/alertmanager.service
           sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/alertmanager.service
-?
+
           # Create prometheus config
           echo "global:" > prometheus.yml
           echo "  scrape_interval: 15s" >> prometheus.yml
@@ -219,7 +212,7 @@ Resources:
           echo "        port: 9100" >> prometheus.yml
           # Reposition prometheus.yml
           sudo mv prometheus.yml /etc/prometheus/prometheus.yml
-?
+
           # Create rules
           echo "groups:" > /etc/prometheus/rules.yml
           echo "- name: Down" >> /etc/prometheus/rules.yml
